@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
+
+Route::group(['prefix' => 'test'], function()
+{
+});
+    Route::resource('student', 'StudentsController');
+
