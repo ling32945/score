@@ -16,9 +16,12 @@ class StudentsController extends Controller
      *
      * @return Response
      */
+    public function main()
+    {
+    }
+
     public function index()
     {
-
         $students = Student::all();
         return view('student.index', compact('students'));
     }

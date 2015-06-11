@@ -31,7 +31,6 @@ class ScoresController extends Controller
     public function create()
     {
         $courses = Score::all();
-        $courseArray;
         foreach($courses as $course){
             $courseArray[$course['course_no']] = $course['name'];
         }
@@ -48,26 +47,25 @@ class ScoresController extends Controller
     {
         $rules = array(
             'course_no' => 'required',
-            'name'      => 'required'
+            'score'     => 'required|integer|min:1|max:3'
         );
 
         $validator = Validator::make(Input::all(), $rules);
 
         if($validator->fails()){
-            return Redirect::to('course/create')
+            return Redirect::to('score/create')
                 ->withErrors($validator)
                 ->withInput();
         }
         else {
-            $course = new Course;
-            $course->course_no      = Input::get('course_no');
-            $course->name           = Input::get('name');
-            $course->description    =  Input::get('description');
+            $score = new Score;
+            $score->course_no   = Input::get('course_no');
+            $score->score       = Input::get('score');
 
-            $course->save();
+            $score->save();
 
             Session::flash('message', 'Successfully created course!');
-            return Redirect::to('course');
+            return Redirect::to('score');
         }
     }
 
