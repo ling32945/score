@@ -20,6 +20,7 @@ class CreateCoursesTable extends Migration
             $table->string('description', 45);
 
             $table->unique('course_no');
+            $table->index('course_no');
         });
 
         Schema::table('courses', function (Blueprint $table) {

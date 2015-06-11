@@ -15,9 +15,12 @@ class CreateScoresTable extends Migration
         Schema::create('scores', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('student_id');
-            $table->integer('course_id');
+            $table->string('SID');
+            $table->string('course_no');
             $table->integer('score');
+
+            $table->index('SID');
+            $table->index('course_no');
 
         });
         
@@ -36,6 +39,6 @@ class CreateScoresTable extends Migration
         Schema::table('scores', function (Blueprint $table) {
             //
         });
-        Schema::drop('score');
+        Schema::drop('scores');
     }
 }
