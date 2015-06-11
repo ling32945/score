@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Student;
+use App\Score;
 
-class StudentsController extends Controller
+use View, Validator, Input, Redirect, Session;
+
+class ScoresController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +20,7 @@ class StudentsController extends Controller
      */
     public function index()
     {
-
-        $students = Student::all();
-        return view('student.index', compact('students'));
+        //
     }
 
     /**
@@ -30,7 +30,13 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        //
+        $courses = Score::all();
+        $courseArray;
+        foreach($courses as $course){
+            $courseArray[$course['course_no']] = $course['name'];
+        }
+        return View::make('score.create')
+            ->with('courses', $courseArray);
     }
 
     /**
@@ -40,7 +46,29 @@ class StudentsController extends Controller
      */
     public function store()
     {
-        //
+        $rules = array(
+            'course_no' => 'required',
+            'name'      => 'required'
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        if($validator->fails()){
+            return Redirect::to('course/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else {
+            $course = new Course;
+            $course->course_no      = Input::get('course_no');
+            $course->name           = Input::get('name');
+            $course->description    =  Input::get('description');
+
+            $course->save();
+
+            Session::flash('message', 'Successfully created course!');
+            return Redirect::to('course');
+        }
     }
 
     /**
