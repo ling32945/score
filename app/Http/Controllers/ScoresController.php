@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Student;
-
-class StudentsController extends Controller
+class ScoresController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +16,7 @@ class StudentsController extends Controller
      */
     public function index()
     {
-
-        $students = Student::all();
-        return view('student.index', compact('students'));
+        //
     }
 
     /**

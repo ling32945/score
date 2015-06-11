@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Student;
+use App\Course;
 
-class StudentsController extends Controller
+class CoursesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +18,8 @@ class StudentsController extends Controller
      */
     public function index()
     {
-
-        $students = Student::all();
-        return view('student.index', compact('students'));
+        $courses = Course::all();
+        return view('course.index', compact('courses'));
     }
 
     /**
@@ -30,7 +29,8 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        //
+        //return View::make('courses.create');
+        return view('course.create');
     }
 
     /**

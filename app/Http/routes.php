@@ -11,17 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+/*Route::get('/', function () {
+    return view('welcome');
+});*/
+
+Route::get('/', 'StudentsController@index');
 
 Route::group(['prefix' => 'test'], function()
 {
 });
     Route::resource('student', 'StudentsController');
+    Route::resource('course', 'CoursesController');
+    Route::resource('score', 'ScoresController');
 
