@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use App\Course;
 
+use Validator, Input, Redirect, Session;
+
 class CoursesController extends Controller
 {
     /**
@@ -40,7 +42,29 @@ class CoursesController extends Controller
      */
     public function store()
     {
-        //
+        $rules = array(
+            'course_no' => 'required',
+            'name'      => 'required'
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        if($validator->fails()){
+            return Redirect::to('course/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else {
+            $course = new Course;
+            $course->course_no      = Input::get('course_no');
+            $course->name           = Input::get('name');
+            $course->description    =  Input::get('description');
+
+            $course->save();
+
+            Session::flash('message', 'Successfully created course!');
+            return Redirect::to('course');
+        }
     }
 
     /**

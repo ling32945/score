@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Score;
+
+use View, Validator, Input, Redirect, Session;
+
 class ScoresController extends Controller
 {
     /**
@@ -26,7 +30,13 @@ class ScoresController extends Controller
      */
     public function create()
     {
-        //
+        $courses = Score::all();
+        $courseArray;
+        foreach($courses as $course){
+            $courseArray[$course['course_no']] = $course['name'];
+        }
+        return View::make('score.create')
+            ->with('courses', $courseArray);
     }
 
     /**
@@ -36,7 +46,29 @@ class ScoresController extends Controller
      */
     public function store()
     {
-        //
+        $rules = array(
+            'course_no' => 'required',
+            'name'      => 'required'
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        if($validator->fails()){
+            return Redirect::to('course/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else {
+            $course = new Course;
+            $course->course_no      = Input::get('course_no');
+            $course->name           = Input::get('name');
+            $course->description    =  Input::get('description');
+
+            $course->save();
+
+            Session::flash('message', 'Successfully created course!');
+            return Redirect::to('course');
+        }
     }
 
     /**
