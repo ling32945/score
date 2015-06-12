@@ -47,15 +47,8 @@ class ScoresController extends Controller
      */
     public function store()
     {
-        $SID = Input::get('SID');
-        //$student = Student::where('SID', '=', $SID)->count();
-        Validator::extend('exsit', function($attribute, $value, $parameters) {
-            $student = Student::where($attribute, '=', $value)->count();
-            return $student;
-        });
-
         $rules = array(
-            'SID'       => 'required|exsit',
+            'SID'       => 'required|exists:scores',
             'course_no' => 'required',
             'score'     => 'required|integer|min:0|max:1000'
         );
@@ -75,7 +68,7 @@ class ScoresController extends Controller
 
             $score->save();
 
-            Session::flash('message', 'Successfully created course!');
+            Session::flash('message', 'Successfully add score!');
             return Redirect::to('score');
         }
     }

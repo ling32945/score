@@ -5,6 +5,9 @@
     <div class="page-header">
         <h1>List all courses</h1>
     <div>
+@if (Session::has('message'))
+    <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
     <div>
         <a href="{{ url('/course/create') }}" >Add Course</a>
     </div>
