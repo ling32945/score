@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Score;
+use App\Course;
+use App\Student;
 
 use View, Validator, Input, Redirect, Session;
 
@@ -30,7 +32,7 @@ class ScoresController extends Controller
      */
     public function create()
     {
-        $courses = Score::all();
+        $courses = Course::all();
         foreach($courses as $course){
             $courseArray[$course['course_no']] = $course['name'];
         }
@@ -45,9 +47,17 @@ class ScoresController extends Controller
      */
     public function store()
     {
+        $SID = Input::get('SID');
+        //$student = Student::where('SID', '=', $SID)->count();
+        Validator::extend('exsit', function($attribute, $value, $parameters) {
+            $student = Student::where($attribute, '=', $value)->count();
+            return $student;
+        });
+
         $rules = array(
+            'SID'       => 'required|exsit',
             'course_no' => 'required',
-            'score'     => 'required|integer|min:1|max:3'
+            'score'     => 'required|integer|min:0|max:1000'
         );
 
         $validator = Validator::make(Input::all(), $rules);
@@ -59,6 +69,7 @@ class ScoresController extends Controller
         }
         else {
             $score = new Score;
+            $score->SID         = Input::get('SID');
             $score->course_no   = Input::get('course_no');
             $score->score       = Input::get('score');
 

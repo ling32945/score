@@ -16,7 +16,7 @@
     return view('welcome');
 });*/
 
-Route::get('/', 'StudentsController@index');
+Route::get('/', 'StudentsController@main');
 
 Route::group(['prefix' => 'test'], function()
 {
@@ -24,4 +24,8 @@ Route::group(['prefix' => 'test'], function()
     Route::resource('student', 'StudentsController');
     Route::resource('course', 'CoursesController');
     Route::resource('score', 'ScoresController');
-
+    Route::group(['prefix' => 'score'], function(){
+        Route::get('/', 'ScoresController@create');
+        Route::get('create', 'ScoresController@create');
+        Route::post('store', 'ScoresController@store');
+    });

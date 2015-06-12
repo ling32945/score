@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use DB;
 use App\Student;
 
 class StudentsController extends Controller
@@ -18,11 +19,27 @@ class StudentsController extends Controller
      */
     public function main()
     {
+        $students = DB::table('students')
+            ->leftJoin('scores', 'students.SID', '=', 'scores.SID')
+            ->select('students.id', 'students.SID', 'students.name', 'students.email', 'students.mobile', 'students.grade', 'students.class', 'students.status', DB::raw('SUM(scores.score) as total_score'))
+            ->groupBy('students.SID')
+            ->get();
+        $i = 1;
+        foreach($students as $student){
+            $student->ID = $i;
+            $i += 1;
+        }
+        return view('student.main', compact('students'));
     }
 
     public function index()
     {
         $students = Student::all();
+        $i = 1;
+        foreach($students as $student){
+            $student["ID"] = $i;
+            $i += 1;
+        }
         return view('student.index', compact('students'));
     }
 

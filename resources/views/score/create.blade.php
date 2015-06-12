@@ -18,7 +18,7 @@
 
     <div class="form-group">
         {!! Form::label('name', 'Course Name') !!}
-        {!! Form::select('course_id', $courses, Input::old('course_id'), array('class' => 'form-control')) !!}
+        {!! Form::select('course_no', $courses, Input::old('course_no'), array('class' => 'form-control')) !!}
     </div>
 
     <div class="form-group">
